@@ -107,7 +107,7 @@ class CreateNotification extends CreateRecord
             $endpoint = config('app.endpoints.sms_url');
 
             Http::post($endpoint, [
-                'phoneNumber' => "228$phone",
+                'phoneNumber' => "$phone",
                 'message' => strtoupper($message),
             ]);
 

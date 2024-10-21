@@ -3,25 +3,27 @@
 namespace App\Filament\Resources;
 
 use Filament\Forms;
+use Filament\Forms\Components\DatePicker;
 use Filament\Tables;
 use App\Models\Staff;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\MailingList;
+use Ramsey\Uuid\Type\Integer;
 use App\Models\MailingListStaff;
 use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Section;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use App\Filament\Resources\StaffResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\StaffResource\RelationManagers;
-use App\Models\MailingList;
-use Filament\Notifications\Notification;
-use Ramsey\Uuid\Type\Integer;
 
 class StaffResource extends Resource
 {
@@ -33,11 +35,19 @@ class StaffResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make("name")
+
+                Section::make("Informations ")
+                    ->schema([
+                        TextInput::make("name")
                     ->label(__("Nom")),
                     
                     TextInput::make("phoneNumber")
-                    ->label(__("Téléphone"))
+                    ->label(__("Téléphone")),
+
+                    DatePicker::make("birthDate")
+                    ->label(__("Date de naissance"))
+                    ->displayFormat("d/m/y")
+                    ])
             ]);
     }
 
