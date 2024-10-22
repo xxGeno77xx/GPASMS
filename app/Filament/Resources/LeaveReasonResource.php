@@ -20,8 +20,8 @@ use App\Filament\Resources\LeaveReasonResource\RelationManagers;
 class LeaveReasonResource extends Resource
 {
     protected static ?string $model = LeaveReason::class;
-
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $label = "Motifs d'absence";
+    protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-bottom-center-text';
 
     public static function form(Form $form): Form
     {

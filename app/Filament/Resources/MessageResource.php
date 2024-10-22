@@ -25,7 +25,7 @@ use Schmeits\FilamentCharacterCounter\Forms\Components\Textarea;
 class MessageResource extends Resource
 {
     protected static ?string $model = Message::class;
-
+    protected static ?string $label = "Messages Standardisés";
     protected static ?string $navigationIcon = 'heroicon-o-book-open';
 
     public static function form(Form $form): Form
