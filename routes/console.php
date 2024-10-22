@@ -9,4 +9,6 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote')->hourly();
 
 Schedule::command('anniversary:check')->dailyAt('10:00');
+
+Schedule::command('leave:check')->dailyAt('16:03');
  

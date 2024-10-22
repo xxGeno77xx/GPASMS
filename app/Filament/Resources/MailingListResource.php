@@ -24,7 +24,9 @@ class MailingListResource extends Resource
 {
     protected static ?string $model = MailingList::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $label = "Listes de diffusion";
+
+    protected static ?string $navigationIcon = 'heroicon-o-speaker-wave';
 
     public static function form(Form $form): Form
     {
@@ -34,6 +36,8 @@ class MailingListResource extends Resource
                     ->schema([
                         TextInput::make("name")
                             ->label(__("Nom de la liste de diffusion"))
+                            ->required()
+                            ->unique(ignoreRecord:true)
                     ]),
 
                     Self::mailingListMembers("staffs")

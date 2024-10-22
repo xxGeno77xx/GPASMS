@@ -28,8 +28,8 @@ use App\Filament\Resources\StaffResource\RelationManagers;
 class StaffResource extends Resource
 {
     protected static ?string $model = Staff::class;
-
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $label = "Membres du personnel";
+    protected static ?string $navigationIcon = 'heroicon-o-user-circle';
 
     public static function form(Form $form): Form
     {
@@ -39,14 +39,17 @@ class StaffResource extends Resource
                 Section::make("Informations ")
                     ->schema([
                         TextInput::make("name")
-                    ->label(__("Nom")),
-                    
-                    TextInput::make("phoneNumber")
-                    ->label(__("Téléphone")),
+                            ->label(__("Nom"))
+                            ->required(),
 
-                    DatePicker::make("birthDate")
-                    ->label(__("Date de naissance"))
-                    ->displayFormat("d/m/y")
+                        TextInput::make("phoneNumber")
+                            ->label(__("Téléphone"))
+                            ->required(),
+
+                        DatePicker::make("birthDate")
+                            ->label(__("Date de naissance"))
+                            ->displayFormat("d/m/y")
+                            ->required()
                     ])
             ]);
     }
@@ -67,19 +70,19 @@ class StaffResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    
+
                     Tables\Actions\BulkAction::make(__("Inclure dans une liste de diffusion"))
                         ->icon("heroicon-o-speaker-wave")
                         ->color(Color::Blue)
                         ->form(self::mailinglistSelect())
                         ->modalSubmitActionLabel(__("Soumettre"))
-                        ->action(function (array $data, Collection $selectedRecords):void{
+                        ->action(function (array $data, Collection $selectedRecords): void {
 
                             $selectedRecords->each(
-                                fn (Model $selectedRecord) =>MailingListStaff::firstOrCreate([
+                                fn(Model $selectedRecord) => MailingListStaff::firstOrCreate([
                                     "staff_id" => $selectedRecord->id,
                                     "mailing_list_id" => $data["mailingList"],
-                                 ]),
+                                ]),
                             );
 
                             Notification::make("added")
@@ -113,11 +116,11 @@ class StaffResource extends Resource
     {
         return [
             Select::make("mailingList")
-            ->options(MailingList::pluck("name", "id"))
-            ->searchable()
-            ->label(__("Liste de diffusion"))
-            ->preload()
-            ->required()
+                ->options(MailingList::pluck("name", "id"))
+                ->searchable()
+                ->label(__("Liste de diffusion"))
+                ->preload()
+                ->required()
         ];
     }
 

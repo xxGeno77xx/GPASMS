@@ -13,7 +13,7 @@ class ListStaff extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()->label(__("Ajouter un membre du personnel")),
         ];
     }
 }

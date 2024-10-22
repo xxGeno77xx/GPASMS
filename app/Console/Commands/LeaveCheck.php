@@ -4,7 +4,9 @@ namespace App\Console\Commands;
 
 use Carbon\Carbon;
 use App\Models\Staff;
+use App\Models\Message;
 use App\Enums\StatesClass;
+use Illuminate\Support\Str;
 use App\Models\LeaveRequest;
 use Illuminate\Console\Command;
 use App\Filament\Resources\NotificationResource\Pages\CreateNotification;
@@ -30,40 +32,39 @@ class LeaveCheck extends Command
      */
     public function handle()
     {
+
+       
         $leaveRequests = LeaveRequest::where("status", StatesClass::onGoing()->value)->get();
+
+        if ($leaveRequests->count() == 0) {
+            $this->info('No leaves found');
+        } else {
+            $this->info($leaveRequests->count().' Leaves found');
+        }
 
         foreach ($leaveRequests as $leaveRequest) {
 
-            $staffMemberPhone = Staff::find($leaveRequest->staff_id)->phoneNumber;
+            $staffMember = Staff::find($leaveRequest->staff_id);
 
-            if($this->startDateCheck($leaveRequest))
-            {
-                // $message = Model::where("leave_reason_id", $leaveRequest->leave_reason_id) TODO:: create model and migration for stardardized messages to send on various leave reasons
+            $staffMemberPhone = $staffMember->phoneNumber;
+   
+            if ($this->startDateCheck($leaveRequest)) {
 
-                // CreateNotification::sendSms($staffMemberPhone, $message);
+                $params = $this->setMessageParameters( $leaveRequest);
+
+                CreateNotification::sendSms($params["staffMemberPhone"], $params["message"]);
             }
 
-            if($this->endDateCheck($leaveRequest))
-            {
-                // $message = Model::where("leave_reason_id", $leaveRequest->leave_reason_id) TODO:: create model and migration for stardardized messages to send on various leave reasons
+            if ($this->endDateCheck($leaveRequest)) {
 
-                // CreateNotification::sendSms($staffMemberPhone, $message);
-            }
+                $params = $this->setMessageParameters( $leaveRequest);
 
-            if($this->endDateCheck($leaveRequest) && $this->startDateCheck($leaveRequest))
-            {
+                CreateNotification::sendSms($params["staffMemberPhone"], $params["message"]);
+
                 $leaveRequest->update(["status" => StatesClass::completed()->value]);
             }
         }
 
-        if($leaveRequests->count() == 0)
-        {
-            $this->info('No leaves found');
-        }
-        else
-        {
-            $this->info('Leaves found');
-        }
     }
 
     public function startDateCheck(LeaveRequest $leaveRequest): bool
@@ -73,8 +74,8 @@ class LeaveCheck extends Command
         $today = Carbon::parse(today());
 
         $interval = config("app.interval", 3);
-
-        return $today - $startDate == $interval ? true : false;
+ 
+        return intval($startDate->diffInDays($today)) == $interval ? true : false;
     }
 
     public function endDateCheck(LeaveRequest $leaveRequest): bool
@@ -84,7 +85,53 @@ class LeaveCheck extends Command
         $today = Carbon::parse(today());
 
         $interval = config("app.interval", 3);
+ 
+        return $endDate->diffInDays($today)  == $interval ? true : false;
+    }
 
-        return  $endDate - $today == $interval ? true : false;
+    function setMessageParameters(LeaveRequest $leaveRequest)
+    {
+            $staffMember = Staff::find($leaveRequest->staff_id);
+
+            $staffMemberName = $staffMember->name;
+
+            $staffMemberPhone = $staffMember->phoneNumber;
+
+            $startDate = Carbon::parse($leaveRequest->startDate)->format("d/m/y");
+
+            $endDate = Carbon::parse($leaveRequest->endDate)->format("d/m/y");
+
+            $params = [];
+
+            $params = [
+                "nom" => $staffMemberName,
+                "date_debut" => $startDate,
+                "date_fin" =>  $endDate
+            ];
+            
+        $messageTemplate = Message::where("leave_reason_id", $leaveRequest->leave_reason_id)->first();
+
+        preg_match_all('/\[(.*?)\]/', $messageTemplate, $matches);
+
+        // get placeholders in template
+        $placeholders = $matches[1];
+
+        $message = $messageTemplate->message;
+
+        // loop through placeholders and replace values
+        foreach ($placeholders as $placeholder) {
+            // if placeholder found, replace
+            if (isset($params[$placeholder])) {
+                // replace placeholder
+                $message = str_replace("[$placeholder]", $params[$placeholder], $message);
+            }
+        }
+
+        return [
+
+            "message" => $message,
+            "staffMemberName" => $staffMemberName,
+            "staffMemberPhone" => $staffMemberPhone
+        ] ;
     }
 }

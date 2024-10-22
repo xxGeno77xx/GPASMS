@@ -16,8 +16,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger("staff_id");
             $table->unsignedBigInteger("leave_reason_id");
-            $table->unsignedBigInteger("startDate");
-            $table->unsignedBigInteger("endDate");
+            $table->date("startDate");
+            $table->date("endDate");
             $table->enum("status", [
                 StatesClass::onGoing()->value,
                 StatesClass::completed()->value

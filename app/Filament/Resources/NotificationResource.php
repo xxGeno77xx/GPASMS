@@ -26,7 +26,8 @@ class NotificationResource extends Resource
 {
     protected static ?string $model = Notification::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-envelope-open';
+    protected static ?string $label = "Envois de sms";
 
     public static function form(Form $form): Form
     {
@@ -114,6 +115,7 @@ class NotificationResource extends Resource
 
                     Textarea::make('message')
                         ->columnSpanFull()
+                        ->required()
                         ->maxLength(160)
                         ->characterLimit(160)
                         ->showInsideControl(true),
