@@ -9,10 +9,10 @@ return [
         'PasswordRenewLog'  => \Phpsa\FilamentAuthentication\Models\PasswordRenewLog::class,
     ],
     'resources'           => [
-        'UserResource'              => \Phpsa\FilamentAuthentication\Resources\UserResource::class,
-        'RoleResource'              => \Phpsa\FilamentAuthentication\Resources\RoleResource::class,
-        'PermissionResource'        => \Phpsa\FilamentAuthentication\Resources\PermissionResource::class,
-        'AuthenticationLogResource' => \Phpsa\FilamentAuthentication\Resources\AuthenticationLogResource::class,
+        'UserResource'              => \App\Filament\Resources\UserResource::class,
+        'RoleResource'              => \App\Filament\Resources\RoleResource::class,
+        'PermissionResource'        => \App\Filament\Resources\PermissionResource::class,
+        'AuthenticationLogResource' => \App\Filament\Resources\AuthenticationLogResource::class,
     ],
     'navigation'          => [
         'user'               => [
@@ -64,6 +64,10 @@ return [
         //renew password days period, 0 to disable
         'renew_password_days_period' => 90,
     ],
+
+    'section' =>[
+        'group' =>'Authentification',
+    ]
 
 
 ];

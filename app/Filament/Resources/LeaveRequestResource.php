@@ -71,7 +71,8 @@ class LeaveRequestResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make("staff"),
+                TextColumn::make("staff")
+                    ->label(__("Nom")),
 
                 TextColumn::make("motif"),
 
@@ -90,11 +91,11 @@ class LeaveRequestResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                // Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    // Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
             ->modifyQueryUsing(function($query){
@@ -116,7 +117,7 @@ class LeaveRequestResource extends Resource
         return [
             'index' => Pages\ListLeaveRequests::route('/'),
             'create' => Pages\CreateLeaveRequest::route('/create'),
-            'edit' => Pages\EditLeaveRequest::route('/{record}/edit'),
+            // 'edit' => Pages\EditLeaveRequest::route('/{record}/edit'),
         ];
     }
 }

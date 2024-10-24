@@ -22,7 +22,7 @@ class LeaveReasonResource extends Resource
     protected static ?string $model = LeaveReason::class;
     protected static ?string $label = "Motifs d'absence";
     protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-bottom-center-text';
-
+    
     public static function form(Form $form): Form
     {
         return $form
@@ -50,7 +50,7 @@ class LeaveReasonResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    // Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }

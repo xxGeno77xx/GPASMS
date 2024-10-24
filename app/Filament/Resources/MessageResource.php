@@ -53,6 +53,10 @@ class MessageResource extends Resource
                         Select::make("leave_reason_id")
                             ->label(__("Motif"))
                             ->options(leaveReason::pluck("label", "id"))
+                            ->unique()
+                            ->validationMessages([
+                                'unique' => 'Il existe déjà un message pour ce motif',
+                            ])
                             ->searchable()
 
                     ])
@@ -65,7 +69,8 @@ class MessageResource extends Resource
         return $table
             ->columns([
                 TextColumn::make("message")
-                    ->label(__("contenu")),
+                    ->label(__("Contenu")),
+                    
                     BadgeColumn::make("motive")
                     ->label(__("Motif"))
             ])
@@ -77,7 +82,7 @@ class MessageResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    // Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
             ->modifyQueryUsing(function($query){

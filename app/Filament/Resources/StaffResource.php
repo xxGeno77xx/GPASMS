@@ -30,7 +30,10 @@ class StaffResource extends Resource
     protected static ?string $model = Staff::class;
     protected static ?string $label = "Membres du personnel";
     protected static ?string $navigationIcon = 'heroicon-o-user-circle';
-
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
     public static function form(Form $form): Form
     {
         return $form

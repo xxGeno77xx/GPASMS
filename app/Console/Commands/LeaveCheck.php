@@ -104,9 +104,9 @@ class LeaveCheck extends Command
             $params = [];
 
             $params = [
-                "nom" => $staffMemberName,
-                "date_debut" => $startDate,
-                "date_fin" =>  $endDate
+                "NOM" => $staffMemberName,
+                "DATE_DEBUT" => $startDate,
+                "DATE_FIN" =>  $endDate
             ];
             
         $messageTemplate = Message::where("leave_reason_id", $leaveRequest->leave_reason_id)->first();

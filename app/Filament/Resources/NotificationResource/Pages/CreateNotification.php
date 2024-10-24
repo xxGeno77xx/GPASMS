@@ -4,6 +4,7 @@ namespace App\Filament\Resources\NotificationResource\Pages;
 
 use App\Models\Staff;
 use Filament\Actions;
+use App\Static\Unaccent;
 use App\Models\Notification;
 use Filament\Actions\Action;
 use App\Models\MailingListStaff;
@@ -11,15 +12,26 @@ use Filament\Support\Colors\Color;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Resources\Pages\CreateRecord;
+use Illuminate\Contracts\Support\Htmlable;
 use App\Filament\Resources\NotificationResource;
 use Filament\Notifications\Notification as PushNotification;
 
 class CreateNotification extends CreateRecord
 {
     protected static string $resource = NotificationResource::class;
+    public function getBreadcrumb(): string
+    {
+        return static::$breadcrumb ?? __('Envoyer sms');
+    }
+
+
 
     protected static bool $canCreateAnother = false;
 
+    public function getTitle(): string | Htmlable
+    {
+        return __('Envoyer un SMS',  );
+    }
     protected function getCreateFormAction(): Action
     {
         return Action::make('create')
@@ -32,8 +44,6 @@ class CreateNotification extends CreateRecord
 
     protected function handleRecordCreation(array $data): Model
     {
-
-        // TODO if insertion in imobile is successful, insert in table here
         
         $message = $data["message"];
 
@@ -50,14 +60,14 @@ class CreateNotification extends CreateRecord
 
                         return Notification::create([
                             "staff_id" => $staffMemberId,
-                            "message" => strtoupper($message),
+                            "message" => strtoupper(Unaccent::unaccent($message)),
                             "notification_type" => 1
                         ]);
                     }
                     else{ 
                         Notification::create([
                             "staff_id" => $staffMemberId,
-                            "message" => strtoupper($message),
+                            "message" => strtoupper(Unaccent::unaccent($message)),
                             "notification_type" => 1
                         ]);
                         Self::sendSms($phone, $message);
@@ -68,14 +78,14 @@ class CreateNotification extends CreateRecord
                     Self::sendSms($phone, strtoupper($message));
                     return Notification::create([
                         "staff_id" => $staffMemberId,
-                        "message" => strtoupper($message),
+                        "message" => strtoupper(Unaccent::unaccent($message)),
                         "notification_type" => 1
                     ]);
                 }
                 
 
 
-                Self::sendSms($phone, $message); /*TODO: api integration*/
+                Self::sendSms($phone, $message);  
             }
         } else {
 
@@ -88,12 +98,12 @@ class CreateNotification extends CreateRecord
 
                 $message = $data["message"];
 
-              Self::sendSms($phone, $message); /*TODO: api integration*/
+              Self::sendSms($phone, $message);  
             }
 
             return Notification::create([
                 "mailing_list_id" => $data["mailing_list_id"],
-                "message" => strtoupper($message),
+                "message" => strtoupper(Unaccent::unaccent($message)),
                 "notification_type" => 1
             ]);
         }
@@ -108,7 +118,7 @@ class CreateNotification extends CreateRecord
 
             Http::post($endpoint, [
                 'phoneNumber' => "$phone",
-                'message' => strtoupper($message),
+                'message' => strtoupper( Unaccent::unaccent($message)),
             ]);
 
             PushNotification::make()

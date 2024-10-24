@@ -10,5 +10,5 @@ Artisan::command('inspire', function () {
 
 Schedule::command('anniversary:check')->dailyAt('10:00');
 
-Schedule::command('leave:check')->dailyAt('16:03');
+Schedule::command('leave:check')->dailyAt('14:10');
  
