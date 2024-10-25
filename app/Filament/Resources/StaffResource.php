@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use Filament\Forms;
-use Filament\Forms\Components\DatePicker;
 use Filament\Tables;
 use App\Models\Staff;
 use Filament\Forms\Form;
@@ -19,11 +18,14 @@ use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
+use Filament\Forms\Components\DatePicker;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use App\Filament\Resources\StaffResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\StaffResource\RelationManagers;
+use Schmeits\FilamentCharacterCounter\Forms\Components\Textarea;
+use App\Filament\Resources\NotificationResource\Pages\CreateNotification;
 
 class StaffResource extends Resource
 {
@@ -95,6 +97,21 @@ class StaffResource extends Resource
                                 ->color(Color::Blue)
                                 ->send();
                         }),
+
+                        Tables\Actions\BulkAction::make("individual")
+                        ->label(__("Envoyer un ". strtoupper(__("sms"))))
+                        ->icon("heroicon-o-envelope-open")
+                        ->color(Color::Blue)
+                        ->form(self::individualSms())
+                        ->modalSubmitActionLabel(__("Soumettre"))
+                        ->action(function (array $data, Collection $selectedRecords): void {
+
+                            
+                            $selectedRecords->each(
+                                fn(Model $selectedRecord) => CreateNotification::sendSms($selectedRecord->phoneNumber, $data["message"]),
+                            );
+
+                        }),
                 ]),
             ]);
     }
@@ -127,4 +144,14 @@ class StaffResource extends Resource
         ];
     }
 
+    public static function individualSms()
+    {
+        return [
+            Textarea::make("message")
+                ->label(__("Contenu"))
+                ->required()
+                ->maxLength(160)
+                ->characterLimit(160)
+        ];
+    }
 }

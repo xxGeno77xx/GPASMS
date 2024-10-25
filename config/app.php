@@ -128,7 +128,7 @@ return [
     ],
 
     'StandardMessages' =>[
-        'birthday' => "LA POSTE VOUS SOUHAITE JOYEUX ANNIVERSIARE EN CE JOUR!!!",
+        'birthday' => "LA POSTE VOUS SOUHAITE UN JOYEUX ANNIVERSIARE EN CE JOUR!!!",
         '' => ""
     ],
 ];
