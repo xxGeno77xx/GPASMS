@@ -126,4 +126,9 @@ return [
     'endpoints' =>[
         'sms_url' => env('SMS_URL', null)
     ],
+
+    'StandardMessages' =>[
+        'birthday' => "LA POSTE VOUS SOUHAITE JOYEUX ANNIVERSIARE EN CE JOUR!!!",
+        '' => ""
+    ],
 ];

@@ -53,7 +53,7 @@ class MessageResource extends Resource
                         Select::make("leave_reason_id")
                             ->label(__("Motif"))
                             ->options(leaveReason::pluck("label", "id"))
-                            ->unique()
+                            ->unique(ignoreRecord:true)
                             ->validationMessages([
                                 'unique' => 'Il existe déjà un message pour ce motif',
                             ])

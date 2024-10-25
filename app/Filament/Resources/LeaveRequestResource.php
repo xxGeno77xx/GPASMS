@@ -19,7 +19,10 @@ use Filament\Forms\Components\Section;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Forms\Components\DatePicker;
+use Filament\Tables\Actions\ImportAction;
 use Illuminate\Database\Eloquent\Builder;
+use EightyNine\ExcelImport\ExcelImportAction;
+use App\Filament\Imports\LeaveRequestImporter;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\LeaveRequestResource\Pages;
 use App\Filament\Resources\LeaveRequestResource\RelationManagers;
@@ -70,6 +73,8 @@ class LeaveRequestResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->headerActions([
+            ])
             ->columns([
                 TextColumn::make("staff")
                     ->label(__("Nom")),
@@ -85,23 +90,23 @@ class LeaveRequestResource extends Resource
                     ->date("d. M Y")
                     ->color(Color::Red)
                     ->label("Date fin"),
-                 
+
             ])
             ->filters([
                 //
             ])
             ->actions([
-                // Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     // Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->modifyQueryUsing(function($query){
+            ->modifyQueryUsing(function ($query) {
                 $query->join("staff", "staff.id", "leave_requests.staff_id")
-                ->join("leave_reasons", "leave_reasons.id", "leave_requests.leave_reason_id")
-                ->select("leave_requests.*", "leave_reasons.label as motif", "staff.name as staff");
+                    ->join("leave_reasons", "leave_reasons.id", "leave_requests.leave_reason_id")
+                    ->select("leave_requests.*", "leave_reasons.label as motif", "staff.name as staff");
             });
     }
 
