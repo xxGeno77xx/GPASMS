@@ -69,7 +69,8 @@ class MessageResource extends Resource
         return $table
             ->columns([
                 TextColumn::make("message")
-                    ->label(__("Contenu")),
+                    ->label(__("Contenu"))
+                    ->limit(50),
                     
                     BadgeColumn::make("motive")
                     ->label(__("Motif"))

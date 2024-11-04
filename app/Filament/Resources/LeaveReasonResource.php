@@ -29,7 +29,7 @@ class LeaveReasonResource extends Resource
             ->schema([
                 Section::make("")
                     ->schema([
-                        Select::make("label")
+                        TextInput::make("label")
                             ->label(__("Intitulé du motif"))
                     ])
             ]);

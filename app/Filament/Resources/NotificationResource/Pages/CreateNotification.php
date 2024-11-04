@@ -48,12 +48,12 @@ class CreateNotification extends CreateRecord
         $message = $data["message"];
 
         if ($data["grouping"] == false) {
-
+             
             foreach ($data["staff_id"] as $key => $staffMemberId) {
-
+                
                 $phone = Staff::find($staffMemberId)->phoneNumber;
 
-                if (count($data) > 1) { 
+                if (count($data["staff_id"]) > 1) { 
                     if ($key == array_key_last($data["staff_id"])) {
 
                         Self::sendSms($phone, $message);

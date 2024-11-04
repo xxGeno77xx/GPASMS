@@ -64,7 +64,11 @@ class StaffResource extends Resource
         return $table
             ->columns([
                 TextColumn::make("name")
-                    ->label("Nom")
+                    ->label("Nom & Prénoms")
+                    ->searchable(),
+
+                    TextColumn::make("phoneNumber")
+                    ->label("Téléphone")
                     ->searchable()
             ])
             ->filters([
