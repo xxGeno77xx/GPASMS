@@ -11,13 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('staff', function (Blueprint $table) {
+        Schema::create('affectations', function (Blueprint $table) {
             $table->id();
-            $table->string("name");
-            $table->string("phoneNumber");
-            $table->string("birthDate")->nullable();
-            $table->string("sexe");
-            $table->unsignedBigInteger("affectation_id")->nullable();
+            $table->string("libelle");
             $table->timestamps();
         });
     }
@@ -27,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('staff');
+        Schema::dropIfExists('affectations');
     }
 };

@@ -7,11 +7,13 @@ use Filament\Tables;
 use App\Models\Staff;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\Affectation;
 use App\Models\MailingList;
 use Ramsey\Uuid\Type\Integer;
 use App\Models\MailingListStaff;
 use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
+use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
 use Filament\Tables\Columns\TextColumn;
@@ -43,18 +45,30 @@ class StaffResource extends Resource
 
                 Section::make("Informations ")
                     ->schema([
-                        TextInput::make("name")
-                            ->label(__("Nom"))
-                            ->required(),
 
-                        TextInput::make("phoneNumber")
-                            ->label(__("Téléphone"))
-                            ->required(),
+                        Grid::make(2)
+                            ->schema([
 
-                        DatePicker::make("birthDate")
-                            ->label(__("Date de naissance"))
-                            ->displayFormat("d/m/y")
-                            ->required()
+                                TextInput::make("name")
+                                    ->label(__("Nom"))
+                                    ->required(),
+
+                                TextInput::make("phoneNumber")
+                                    ->label(__("Téléphone"))
+                                    ->required(),
+
+                                DatePicker::make("birthDate")
+                                    ->label(__("Date de naissance"))
+                                    ->displayFormat("d/m/y")
+                                    ->required(),
+
+                                Select::make("affectation_id")
+                                    ->label(__("Affectation"))
+                                    ->required()
+                                    ->options(Affectation::pluck("libelle", "id"))
+                                    ->searchable(),
+                            ])
+
                     ])
             ]);
     }
@@ -67,8 +81,12 @@ class StaffResource extends Resource
                     ->label("Nom & Prénoms")
                     ->searchable(),
 
-                    TextColumn::make("phoneNumber")
+                TextColumn::make("phoneNumber")
                     ->label("Téléphone")
+                    ->searchable(),
+
+                TextColumn::make("affectation_id")
+                    ->label("Affectation")
                     ->searchable()
             ])
             ->filters([
@@ -102,15 +120,15 @@ class StaffResource extends Resource
                                 ->send();
                         }),
 
-                        Tables\Actions\BulkAction::make("individual")
-                        ->label(__("Envoyer un ". strtoupper(__("sms"))))
+                    Tables\Actions\BulkAction::make("individual")
+                        ->label(__("Envoyer un " . strtoupper(__("sms"))))
                         ->icon("heroicon-o-envelope-open")
                         ->color(Color::Blue)
                         ->form(self::individualSms())
                         ->modalSubmitActionLabel(__("Soumettre"))
                         ->action(function (array $data, Collection $selectedRecords): void {
 
-                            
+
                             $selectedRecords->each(
                                 fn(Model $selectedRecord) => CreateNotification::sendSms($selectedRecord->phoneNumber, $data["message"]),
                             );
