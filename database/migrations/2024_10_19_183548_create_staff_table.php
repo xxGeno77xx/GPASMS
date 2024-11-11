@@ -13,11 +13,18 @@ return new class extends Migration
     {
         Schema::create('staff', function (Blueprint $table) {
             $table->id();
+            $table->string("legacy_id");
             $table->string("name");
-            $table->string("phoneNumber");
-            $table->string("birthDate")->nullable();
-            $table->string("sexe");
-            $table->unsignedBigInteger("affectation_id")->nullable();
+            $table->string("gender");
+            $table->date("birthDate")->nullable();
+            $table->unsignedBigInteger("affectation_id")->nullable()->constrained(table:"affectations");
+            $table->string("phoneNumber")->nullable();
+            $table->string("group")->nullable();
+            $table->string("function")->nullable();
+
+            
+            
+            
             $table->timestamps();
         });
     }
