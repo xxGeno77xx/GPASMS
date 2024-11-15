@@ -8,6 +8,7 @@ use App\Models\Notation;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
+use Notification;
 
 class NotationCheck extends Command
 {
@@ -70,23 +71,31 @@ class NotationCheck extends Command
     {
         $returnString = " ";
 
+        $oldNotationCount = Notation::count();
+
         // Create new notations for staff members based on previous notation Sheets
-        if($collection->count() > 0)
-        {
+        if ($collection->count() > 0) {
             foreach ($collection as $latestNotation) {
 
                 if ($this->checkNotationPeriod($latestNotation->period)) {
-    
+
                     Notation::firstOrCreate([
                         "staff_id" => $latestNotation->staff_id,
                         "period" => today(),
                     ]);
                 }
             }
-        }
-       else
+            $newNotationCount = Notation::count();
 
-        $returnString = "No need for creation of notation Sheets as there are no newcommers!" ;
+            if ($newNotationCount == $oldNotationCount) {
+                $returnString = "No need for creation of notation Sheets as dates not yet arrived";
+            } else {
+                $returnString = "Notation sheets created";
+                // TODO:send Notification to DPAS
+            }
+        } else
+
+            $returnString = "No need for creation of notation Sheets";
 
         return $this->info($returnString);
     }
@@ -106,7 +115,7 @@ class NotationCheck extends Command
             foreach ($membersWithoutNotationSheet as $memberToBeNoted) {
 
                 if ($this->checkNotationPeriod($memberToBeNoted->hireDate)) {
- 
+
                     $convertedHireDate = Carbon::parse($memberToBeNoted->hireDate);
 
                     Notation::firstOrCreate([
@@ -115,12 +124,16 @@ class NotationCheck extends Command
                     ]);
                 }
             }
-            $returnString = "Notation sheets created for newcommers!!";
-        }else{
-            $returnString = "No need for creation of notation Sheets as there are no newcommers!" ;
+            if ($membersWithoutNotationSheet->count() == 0) {
+                $returnString = "Notation sheets created for newcommers!!";
+                // TODO:send Notification to DPAS
+            } else {
+                $returnString = "Notation sheets not to be created yet as time has not yet arrived for newcommers!!";
+            }
+
+        } else {
+            $returnString = "No need for creation of notation Sheets as there are no newcommers!";
         }
-        
-        
 
         return $this->info($returnString);
     }
