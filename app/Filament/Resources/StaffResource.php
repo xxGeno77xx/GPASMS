@@ -14,6 +14,7 @@ use App\Models\MailingListStaff;
 use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
 use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
 use Filament\Tables\Columns\TextColumn;
@@ -28,6 +29,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\StaffResource\RelationManagers;
 use Schmeits\FilamentCharacterCounter\Forms\Components\Textarea;
 use App\Filament\Resources\NotificationResource\Pages\CreateNotification;
+use App\Filament\Resources\StaffResource\RelationManagers\NotationsRelationManager;
 
 class StaffResource extends Resource
 {
@@ -49,24 +51,69 @@ class StaffResource extends Resource
                         Grid::make(2)
                             ->schema([
 
-                                TextInput::make("name")
-                                    ->label(__("Nom"))
-                                    ->required(),
+                                Grid::make(3)
+                                    ->schema([
 
-                                TextInput::make("phoneNumber")
-                                    ->label(__("Téléphone"))
-                                    ->required(),
+                                        TextInput::make("name")
+                                            ->label(__("Nom"))
+                                            ->required(),
 
-                                DatePicker::make("birthDate")
-                                    ->label(__("Date de naissance"))
-                                    ->displayFormat("d/m/y")
-                                    ->required(),
+                                        TextInput::make("phoneNumber")
+                                            ->label(__("Téléphone"))
+                                            ->required(),
 
-                                Select::make("affectation_id")
-                                    ->label(__("Affectation"))
+                                        DatePicker::make("birthDate")
+                                            ->label(__("Date de naissance"))
+                                            ->displayFormat("d/m/y")
+                                            ->required(),
+                                    ]),
+
+                                Grid::make(3)
+                                    ->schema([
+                                        Select::make("affectation_id")
+                                            ->label(__("Affectation"))
+                                            ->required()
+                                            ->options(Affectation::pluck("libelle", "id"))
+                                            ->searchable(),
+
+                                        TextInput::make("legacy_id")
+                                            ->label(__("Matricule"))
+                                            ->unique(ignoreRecord: true)
+                                            ->required(),
+
+                                        TextInput::make("email")
+                                            ->label(__("Adresse Email"))
+                                            ->email()
+                                            ->unique(ignoreRecord: true)
+                                            ->required(),
+
+                                    ]),
+
+                                DatePicker::make("hireDate")
                                     ->required()
-                                    ->options(Affectation::pluck("libelle", "id"))
-                                    ->searchable(),
+                                    ->label("Date d'embauche"),
+
+
+                                Select::make("group")
+                                    ->label(__("Groupe"))
+                                    ->required()
+                                    ->options([
+                                        "A" => "A",
+                                        "B" => "B",
+                                        "C" => "C",
+                                        "D" => "D",
+                                        "E" => "E",
+                                    ])
+                                    ->required(),
+
+                                Radio::make("gender")
+                                    ->label(__("Sexe"))
+                                    ->options([
+                                        "M" => "Homme",
+                                        "F" => "Femme",
+                                    ])
+                                    ->inline(),
+
                             ])
 
                     ])
@@ -141,7 +188,7 @@ class StaffResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            NotationsRelationManager::class
         ];
     }
 

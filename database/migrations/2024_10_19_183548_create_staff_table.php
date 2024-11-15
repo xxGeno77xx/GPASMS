@@ -16,7 +16,9 @@ return new class extends Migration
             $table->string("legacy_id");
             $table->string("name");
             $table->string("gender");
+            $table->string('email')->unique();
             $table->date("birthDate")->nullable();
+            $table->date("hireDate")->nullable();
             $table->unsignedBigInteger("affectation_id")->nullable()->constrained(table:"affectations");
             $table->string("phoneNumber")->nullable();
             $table->string("group")->nullable();
