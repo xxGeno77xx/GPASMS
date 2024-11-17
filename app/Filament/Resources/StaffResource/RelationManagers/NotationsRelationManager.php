@@ -122,30 +122,33 @@ class NotationsRelationManager extends RelationManager
     {
         return Action::make("sheet")
         ->label("Fiche de notation")
-        ->modalDescription("Voulez vous imprimer la fiche ou l'envoyer par mail?")
-        ->form([
-            Radio::make("choice")
-                ->label("")
-                ->options([
-                    "Mail" => "Envoyer par Mail",
-                    "Print" => "Imprimer"
-                ])->inline()
-        ])
-        ->modalAlignment(Alignment::Left)
+        // ->modalDescription("Voulez vous imprimer la fiche ou l'envoyer par mail?")
+        // ->form([
+        //     Radio::make("choice")
+        //         ->label("")
+        //         ->options([
+        //             "Mail" => "Envoyer par Mail",
+        //             "Print" => "Imprimer"
+        //         ])->inline()
+        // ])
+        // ->modalAlignment(Alignment::Left)
         ->icon("heroicon-o-envelope")
-        ->requiresConfirmation()
-        ->action(function(Notation $record, $data, $action){
+        // ->requiresConfirmation()
+        ->url(fn($record) => route('notationSheet.generate', $record))
+        ->openUrlInNewTab()
+        // ->action(function(Notation $record, $data, $action){
             
-            if($data["choice"] == "Mail")
-            {
+        //     if($data["choice"] == "Mail")
+        //     {
                  
-            }
-            else{
+        //     }
+        //     else{
  
-                redirect()->route('notationSheet.generate', $record);
-            }
+        //        return  redirect()->route('notationSheet.generate', $record);
+        //     }
             
-        });
+        // });;*
+        ;
     }
     
 }

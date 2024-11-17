@@ -17,7 +17,8 @@ return new class extends Migration {
 
             $table->unsignedBigInteger("firstValidator")->nullable()->constrained(table: "staff");
             $table->unsignedBigInteger("secondValidator")->nullable()->constrained(table: "staff");
-            
+            $table->unsignedBigInteger("thirdValidator")->nullable()->constrained(table: "staff");
+
             // Notes chef immediat Chef section
             $table->double("note_a")->nullable();
             $table->double("note_b")->nullable();

@@ -104,6 +104,7 @@ class StaffResource extends Resource
                                         "D" => "D",
                                         "E" => "E",
                                     ])
+                                    ->native(false)
                                     ->required(),
 
                                 Radio::make("gender")
