@@ -10,6 +10,7 @@
         "dompdf/dompdf": "^3.0",
         "eightynine/filament-excel-import": "^3.1",
         "filament/filament": "^3.2",
+        "guava/filament-clusters": "^1.4",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
         "phpsa/filament-authentication": "^4.2",
