@@ -5,6 +5,7 @@ namespace App\Filament\Resources\StaffResource\RelationManagers;
 use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Tables;
+use App\Models\Staff;
 use App\Models\Notation;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
@@ -12,8 +13,8 @@ use Filament\Forms\Components\Grid;
 use Filament\Tables\Actions\Action;
 use Filament\Forms\Components\Radio;
 use Filament\Support\Enums\Alignment;
-use Filament\Forms\Components\Section;
  
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Forms\Components\DatePicker;
@@ -44,14 +45,22 @@ class NotationsRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make()
-                ->label(__("Noter l'employé"))
-                ->modalWidth('7xl')
-                ->modalHeading("Notation de l'employé"),
+                // Tables\Actions\CreateAction::make()
+                // ->label(__("Créer une fiche de notation l'employé"))
+                // ->modalWidth('7xl')
+                // ->modalHeading("Notation de l'employé"),
             ])
             ->actions([
                 ActionGroup::make([
-                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\EditAction::make()->label(__("Attribuer les notes"))
+                    ->modalHeading(function($record) {
+
+                        $staffMemberName = Staff::find($record->staff_id)->name;
+
+                        $period = "Noter". $record->period;
+
+                        return "Notes de " .$staffMemberName. " à la période de " .Carbon::parse($record->period)->translatedFormat("M Y"). " à " .Carbon::parse($record->period)->addMonths(9)->translatedFormat("M Y");
+                    }),
                     Self::sheetAction(),
                     // Tables\Actions\DeleteAction::make(),
                 ]) 
