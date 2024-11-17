@@ -43,7 +43,9 @@ class NotationsRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('id')
             ->columns([
-                Tables\Columns\TextColumn::make('period')->formatStateUsing(fn($state) => "Période de " . Carbon::parse($state)->translatedFormat("M Y") . " à " . Carbon::parse($state)->addMonths(9)->translatedFormat("M Y")),
+                Tables\Columns\TextColumn::make('period')
+                ->label("Période")
+                ->formatStateUsing(fn($state) => "Période de " . Carbon::parse($state)->translatedFormat("M Y") . " à " . Carbon::parse($state)->addMonths(9)->translatedFormat("M Y")),
             ])
             ->filters([
                 //
@@ -95,11 +97,9 @@ class NotationsRelationManager extends RelationManager
 
                     Cluster::make([
 
-                        TextInput::make("note_a"),
-
-                        TextInput::make("note_a"),
-
-                        TextInput::make("note_a"),
+                        TextInput::make("assiduite1"),
+                        TextInput::make("assiduite2"),
+                        TextInput::make("assiduite3"),
 
                     ])
                         ->inlineLabel()
@@ -107,51 +107,43 @@ class NotationsRelationManager extends RelationManager
 
                     Cluster::make([
 
-                        TextInput::make("note_a"),
-
-                        TextInput::make("note_a"),
-
-                        TextInput::make("note_a"),
+                        TextInput::make("commerciale1"),
+                        TextInput::make("commerciale2"),
+                        TextInput::make("commerciale3"),
 
                     ])
                         ->inlineLabel()
                         ->label(__("Capacité commerciale, d’initiative et de créativité")),
 
-                        Cluster::make([
+                    Cluster::make([
 
-                            TextInput::make("note_a"),
-    
-                            TextInput::make("note_a"),
-    
-                            TextInput::make("note_a"),
-    
-                        ])
-                            ->inlineLabel()
-                            ->label(__("Connaissance et conscience professionnelles")),
+                        TextInput::make("connaissance1"),
+                        TextInput::make("connaissance2"),
+                        TextInput::make("connaissance3"),
 
-                            Cluster::make([
+                    ])
+                        ->inlineLabel()
+                        ->label(__("Connaissance et conscience professionnelles")),
 
-                                TextInput::make("note_a"),
-        
-                                TextInput::make("note_a"),
-        
-                                TextInput::make("note_a"),
-        
-                            ])
-                                ->inlineLabel()
-                                ->label(__("Capacité d'encadrer et de travailler en groupe")),
+                    Cluster::make([
 
-                                Cluster::make([
+                        TextInput::make("encadrement1"),
+                        TextInput::make("encadrement2"),
+                        TextInput::make("encadrement3"),
 
-                                    TextInput::make("note_a"),
-            
-                                    TextInput::make("note_a"),
-            
-                                    TextInput::make("note_a"),
-            
-                                ])
-                                    ->inlineLabel()
-                                    ->label(__("Promptitude a rendre compte et à transmettre les ordres")),
+                    ])
+                        ->inlineLabel()
+                        ->label(__("Capacité d'encadrer et de travailler en groupe")),
+
+                    Cluster::make([
+
+                        TextInput::make("promptitude1"),
+                        TextInput::make("promptitude2"),
+                        TextInput::make("promptitude3"),
+
+                    ])
+                        ->inlineLabel()
+                        ->label(__("Promptitude a rendre compte et à transmettre les ordres")),
                 ])
 
 

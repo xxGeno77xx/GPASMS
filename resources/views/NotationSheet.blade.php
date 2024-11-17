@@ -4,6 +4,12 @@ use App\Models\Staff;
   $staffMember = Staff::find($record->staff_id);
   $group = $staffMember->group;
   $matricule = $staffMember->legacy_id;
+
+  $totalchefImmediat= collect([$record->assiduite1, $record->commerciale1, $record->connaissance1, $record->encadrement1, $record->promptitude1])->sum();
+
+  $totalHierarchie1 = collect([$record->assiduite2, $record->commerciale2, $record->connaissance2, $record->encadrement2, $record->promptitude2])->sum();
+
+  $totalHierarchie2= collect([$record->assiduite3, $record->commerciale3, $record->connaissance3, $record->encadrement3, $record->promptitude3])->sum();
   
 @endphp
 <!DOCTYPE html
@@ -410,9 +416,9 @@ border-right-style: solid;
           1-Assiduité et disponibilité
         </p>
       </td>
-      <td style="width: 100pt; border: 1pt solid #3f3b3b; text-align:center; vertical-align: middle;">5</td>
-      <td style="width: 101pt; border: 1pt solid #3f3b3b;  text-align:center; vertical-align: middle;"> 45</td>
-      <td style="width: 90pt; border: 1pt solid #3f3b3b;  text-align:center; vertical-align: middle;">14.3</td>
+      <td style="width: 100pt; border: 1pt solid #3f3b3b; text-align:center; vertical-align: middle;">{{$record->assiduite1}}</td>
+      <td style="width: 101pt; border: 1pt solid #3f3b3b;  text-align:center; vertical-align: middle;">{{$record->assiduite2}} </td>
+      <td style="width: 90pt; border: 1pt solid #3f3b3b;  text-align:center; vertical-align: middle;">{{$record->assiduite3}}</td>
     </tr>
     <tr style="height: 25pt">
       <td style="width: 2pt; border: 1pt solid #3f3b3b;" colspan="3">
@@ -425,9 +431,9 @@ border-right-style: solid;
           2-Capacité commerciale, d’initiative et de créativité
         </p>
       </td>
-      <td style="width: 100pt; border: 1pt solid #3f3b3b; text-align:center; vertical-align: middle;">59</td>
-      <td style="width: 101pt; border: 1pt solid #3f3b3b;  text-align:center; vertical-align: middle;"> 04</td>
-      <td style="width: 90pt; border: 1pt solid #3f3b3b;  text-align:center; vertical-align: middle;">09</td>
+      <td style="width: 100pt; border: 1pt solid #3f3b3b; text-align:center; vertical-align: middle;">{{$record->commerciale1}}</td>
+      <td style="width: 101pt; border: 1pt solid #3f3b3b;  text-align:center; vertical-align: middle;"> {{$record->commerciale2}}</td>
+      <td style="width: 90pt; border: 1pt solid #3f3b3b;  text-align:center; vertical-align: middle;">{{$record->commerciale3}}</td>
     </tr>
     <tr style="height: 25pt">
       <td style="width: 2pt; border: 1pt solid #3f3b3b;" colspan="3">
@@ -440,9 +446,9 @@ border-right-style: solid;
           3-Connaissance et conscience professionnelles
         </p>
       </td>
-      <td style="width: 100pt; border: 1pt solid #3f3b3b; text-align:center; vertical-align: middle;">85</td>
-      <td style="width: 101pt; border: 1pt solid #3f3b3b;  text-align:center; vertical-align: middle;"> 12.5</td>
-      <td style="width: 90pt; border: 1pt solid #3f3b3b;  text-align:center; vertical-align: middle;">09</td>
+      <td style="width: 100pt; border: 1pt solid #3f3b3b; text-align:center; vertical-align: middle;">{{$record->connaissance1}}</td>
+      <td style="width: 101pt; border: 1pt solid #3f3b3b;  text-align:center; vertical-align: middle;"> {{$record->connaissance2}}</td>
+      <td style="width: 90pt; border: 1pt solid #3f3b3b;  text-align:center; vertical-align: middle;">{{$record->connaissance3}}</td>
     </tr>
     <tr style="height: 25pt">
       <td style="width: 2pt; border: 1pt solid #3f3b3b;" colspan="3">
@@ -455,9 +461,9 @@ border-right-style: solid;
           4-Capacité d'encadrer et de travailler en groupe
         </p>
       </td>
-      <td style="width: 100pt; border: 1pt solid #3f3b3b; text-align:center; vertical-align: middle;">5</td>
-      <td style="width: 101pt; border: 1pt solid #3f3b3b;  text-align:center; vertical-align: middle;"> 06</td>
-      <td style="width: 90pt; border: 1pt solid #3f3b3b;  text-align:center; vertical-align: middle;">09</td>
+      <td style="width: 100pt; border: 1pt solid #3f3b3b; text-align:center; vertical-align: middle;">{{$record->encadrement1}}</td>
+      <td style="width: 101pt; border: 1pt solid #3f3b3b;  text-align:center; vertical-align: middle;"> {{$record->encadrement2}}</td>
+      <td style="width: 90pt; border: 1pt solid #3f3b3b;  text-align:center; vertical-align: middle;">{{$record->encadrement3}}</td>
     </tr>
     <tr style="height: 25pt">
       <td style="width: 2pt; border: 1pt solid #3f3b3b;" colspan="3">
@@ -471,9 +477,9 @@ border-right-style: solid;
           les ordres
         </p>
       </td>
-      <td style="width: 100pt; border: 1pt solid #3f3b3b; text-align:center; vertical-align: middle;">5</td>
-      <td style="width: 101pt; border: 1pt solid #3f3b3b;  text-align:center; vertical-align: middle;"> 06</td>
-      <td style="width: 90pt; border: 1pt solid #3f3b3b;  text-align:center; vertical-align: middle;">09</td>
+      <td style="width: 100pt; border: 1pt solid #3f3b3b; text-align:center; vertical-align: middle;">{{$record->promptitude1}}</td>
+      <td style="width: 101pt; border: 1pt solid #3f3b3b;  text-align:center; vertical-align: middle;"> {{$record->promptitude2}}</td>
+      <td style="width: 90pt; border: 1pt solid #3f3b3b;  text-align:center; vertical-align: middle;">{{$record->promptitude3}}</td>
     </tr>
     <tr style="height: 27pt">
       <td style="width: 243pt; border: 1pt solid #3f3b3b;" colspan="3">
@@ -486,9 +492,9 @@ border-right-style: solid;
           Note totale
         </p>
       </td>
-      <td style="width: 100pt; border: 1pt solid #3f3b3b; text-align:center; vertical-align: middle;">5</td>
-      <td style="width: 101pt; border: 1pt solid #3f3b3b;  text-align:center; vertical-align: middle;">12</td>
-      <td style="width: 90pt; border: 1pt solid #3f3b3b;  text-align:center; vertical-align: middle;">13.5</td>
+      <td style="width: 100pt; border: 1pt solid #3f3b3b; text-align:center; vertical-align: middle;">{{$totalchefImmediat}}</td>
+      <td style="width: 101pt; border: 1pt solid #3f3b3b;  text-align:center; vertical-align: middle;">{{$totalHierarchie1}}</td>
+      <td style="width: 90pt; border: 1pt solid #3f3b3b;  text-align:center; vertical-align: middle;">{{$totalHierarchie2}}</td>
     </tr>
     <tr style="height: 30pt">
       <td style="width: 243pt; border: 1pt solid #3f3b3b;" colspan="3">
