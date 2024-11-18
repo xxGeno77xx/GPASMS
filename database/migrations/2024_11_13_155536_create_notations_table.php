@@ -17,33 +17,27 @@ return new class extends Migration {
 
             $table->unsignedBigInteger("firstValidator")->nullable()->constrained(table: "staff");
             $table->unsignedBigInteger("secondValidator")->nullable()->constrained(table: "staff");
-            
+            $table->unsignedBigInteger("thirdValidator")->nullable()->constrained(table: "staff");
+
             // Notes chef immediat Chef section
-            $table->double("note_a")->nullable();
-            $table->double("note_b")->nullable();
-            $table->double("note_c")->nullable();
-            $table->double("note_d")->nullable();
-            $table->double("note_e")->nullable();
+            $table->double("assiduite1")->nullable();
+            $table->double("commerciale1")->nullable();
+            $table->double("connaissance1")->nullable();
+            $table->double("encadrement1")->nullable();
+            $table->double("promptitude1")->nullable();
             // Notes chef hierarchique suivant chef Division
-            $table->double("note_f")->nullable();
-            $table->double("note_g")->nullable();
-            $table->double("note_h")->nullable();
-            $table->double("note_i")->nullable();
-            $table->double("note_j")->nullable();
+            $table->double("assiduite2")->nullable();
+            $table->double("commerciale2")->nullable();
+            $table->double("connaissance2")->nullable();
+            $table->double("encadrement2")->nullable();
+            $table->double("promptitude2")->nullable();
             // Notes chef hierarchique suivant Directeur
 
-            $table->double("note_k")->nullable();
-            $table->double("note_l")->nullable();
-            $table->double("note_m")->nullable();
-            $table->double("note_n")->nullable();
-            $table->double("note_o")->nullable();
-            // Notes chef hierarchique suivant DG?
-
-            $table->double("note_p")->nullable();
-            $table->double("note_q")->nullable();
-            $table->double("note_r")->nullable();
-            $table->double("note_s")->nullable();
-            $table->double("note_t")->nullable();
+            $table->double("assiduite3")->nullable();
+            $table->double("commerciale3")->nullable();
+            $table->double("connaissance3")->nullable();
+            $table->double("encadrement3")->nullable();
+            $table->double("promptitude3")->nullable();
 
             $table->timestamps();
         });
