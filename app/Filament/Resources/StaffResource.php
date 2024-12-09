@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Models\Poste;
 use Filament\Forms;
 use App\Models\Post;
 use Filament\Tables;
@@ -116,7 +117,16 @@ class StaffResource extends Resource
                                 ->label(__("Poste occuppé"))
                                 ->required()
                                 ->options(Post::pluck("libelle", "id"))
-                                ->searchable(),
+                                ->searchable()
+                                ->createOptionForm([
+                                   TextInput::make('label')
+                                        ->label("Libellé du poste")
+                                        ->required(),
+                                ])
+                                ->createOptionUsing(function (array $data): int {
+                                    return Poste::firstOrCreate($data)->getKey();
+                                }),
+                                
                                 ]),
 
                                 Radio::make("gender")

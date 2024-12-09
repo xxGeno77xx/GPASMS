@@ -20,7 +20,7 @@ return new class extends Migration
             $table->date("birthDate")->nullable();
             $table->date("hireDate")->nullable();
             $table->unsignedBigInteger("affectation_id")->nullable()->constrained(table:"affectations");
-            $table->unsignedBigInteger("post_id")->nullable()->constrained(table:"posts");
+            $table->unsignedBigInteger("post_id")->nullable()->constrained(table:"postes");
             $table->string("phoneNumber")->nullable();
             $table->string("group")->nullable();
             $table->string("function")->nullable();

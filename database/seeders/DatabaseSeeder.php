@@ -18,7 +18,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RolesPermissionSeeder::class,
             LeaveMotivesSeeder::class,
-            MailingListSeeder::class
+            MailingListSeeder::class,
+            PostesSeeder::class
         ]);
     }
 }

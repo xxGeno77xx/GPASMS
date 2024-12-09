@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\leaveReason;
+use App\Models\LeaveReason;
 use Illuminate\Database\Seeder;
 use App\Enums\LeaveMotivesClass;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -17,7 +17,7 @@ class LeaveMotivesSeeder extends Seeder
         $motives = LeaveMotivesClass::toValues();
     
             foreach ($motives as $key => $name) {
-                leaveReason::firstOrCreate([
+                LeaveReason::firstOrCreate([
                     'label' => $name,
                 ]);
             }
