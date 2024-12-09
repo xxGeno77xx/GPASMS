@@ -29,6 +29,8 @@ class NotificationResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-envelope-open';
     protected static ?string $label = "Envois de sms";
 
+    protected static ?string $navigationGroup = "Messagerie";
+
     public static function form(Form $form): Form
     {
         return $form

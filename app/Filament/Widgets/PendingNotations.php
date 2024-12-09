@@ -21,7 +21,7 @@ class PendingNotations extends BaseWidget
 
     protected static ?int $sort = 2;
 
-    protected  array|string|int $columnSpan = "full";
+    protected array|string|int $columnSpan = "full";
 
     public function table(Table $table): Table
     {
@@ -43,7 +43,7 @@ class PendingNotations extends BaseWidget
                     ->badge()
             ])
             ->actions([
-         
+
                 $this->editAction()
 
             ]);
@@ -53,29 +53,35 @@ class PendingNotations extends BaseWidget
     private function editAction()
     {
         return Action::make("set")
-            ->label(__("Définir les supérieurs"))
-            ->form(function($record){
-                
-                return 
+            ->label(__("Définir les notateurs"))
+            ->form(function ($record) {
+
+                return
                     [
                         Select::make("immediate_chief")
                             ->label(__("Chef immédiat"))
+                            ->searchable()
+                            ->preload()
                             ->options(Staff::whereNotIn("id", [$record->staff_id])->pluck("name", "id")),
-        
+
                         Select::make("chief_a")
+                            ->searchable()
+                            ->preload()
                             ->label(__("Chef hiérarchique niveau 1"))
                             ->options(Staff::whereNotIn("id", [$record->staff_id])->pluck("name", "id")),
-        
+
                         Select::make("chief_b")
+                            ->searchable()
+                            ->preload()
                             ->label(__("Chef hiérarchique niveau 2"))
                             ->options(Staff::whereNotIn("id", [$record->staff_id])->pluck("name", "id"))
                     ];
-                
+
             })
-            ->action(fn($record, $data) => $record ->update([
+            ->action(fn($record, $data) => $record->update([
                 "firstValidator" => $data["immediate_chief"],
                 "secondValidator" => $data["chief_a"],
-                // "thirdValidator" => $data["chief_b"],
+                "thirdValidator" => $data["chief_b"],
             ]))
             ->requiresConfirmation();
     }

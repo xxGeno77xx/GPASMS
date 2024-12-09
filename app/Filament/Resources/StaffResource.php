@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use Filament\Forms;
+use App\Models\Post;
 use Filament\Tables;
 use App\Models\Staff;
 use Filament\Forms\Form;
@@ -12,8 +13,10 @@ use App\Models\MailingList;
 use Ramsey\Uuid\Type\Integer;
 use App\Models\MailingListStaff;
 use Filament\Resources\Resource;
+use App\Enums\StaffMembersStates;
 use Filament\Support\Colors\Color;
 use Filament\Forms\Components\Grid;
+use Filament\Tables\Actions\Action;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
@@ -89,23 +92,32 @@ class StaffResource extends Resource
 
                                     ]),
 
+                              Grid::make(3)
+                              ->schema([
                                 DatePicker::make("hireDate")
-                                    ->required()
-                                    ->label("Date d'embauche"),
+                                ->required()
+                                ->label("Date d'embauche"),
 
 
-                                Select::make("group")
-                                    ->label(__("Groupe"))
-                                    ->required()
-                                    ->options([
-                                        "A" => "A",
-                                        "B" => "B",
-                                        "C" => "C",
-                                        "D" => "D",
-                                        "E" => "E",
-                                    ])
-                                    ->native(false)
-                                    ->required(),
+                            Select::make("group")
+                                ->label(__("Groupe"))
+                                ->required()
+                                ->options([
+                                    "A" => "A",
+                                    "B" => "B",
+                                    "C" => "C",
+                                    "D" => "D",
+                                    "E" => "E",
+                                ])
+                                ->native(false)
+                                ->required(),
+
+                                Select::make("post_id")
+                                ->label(__("Poste occuppé"))
+                                ->required()
+                                ->options(Post::pluck("libelle", "id"))
+                                ->searchable(),
+                                ]),
 
                                 Radio::make("gender")
                                     ->label(__("Sexe"))
@@ -133,15 +145,19 @@ class StaffResource extends Resource
                     ->label("Téléphone")
                     ->searchable(),
 
-                TextColumn::make("affectation_id")
+                TextColumn::make("libelle")
                     ->label("Affectation")
                     ->searchable()
+                    ->badge()
             ])
             ->filters([
                 //
             ])
             ->actions([
-                //
+                Action::make("deactivate")
+                    ->label("Désactiver")
+                    ->tooltip("Désactiver ce membre du personnel")
+                    ->action(fn($record) => $record->update(["state" => StaffMembersStates::Deactiveted()->value]))
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -183,7 +199,11 @@ class StaffResource extends Resource
 
                         }),
                 ]),
-            ]);
+            ])
+            ->modifyQueryUsing(function($query){
+                $query->join("affectations", "affectations.id", "staff.affectation_id")
+                ->select("staff.*", "affectations.libelle");
+            });
     }
 
     public static function getRelations(): array

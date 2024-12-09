@@ -65,8 +65,6 @@ class NotationsRelationManager extends RelationManager
 
                             $staffMemberName = Staff::find($record->staff_id)->name;
 
-                            $period = "Noter" . $record->period;
-
                             return "Notes de " . $staffMemberName . " à la période de " . Carbon::parse($record->period)->translatedFormat("M Y") . " à " . Carbon::parse($record->period)->addMonths(9)->translatedFormat("M Y");
                         }),
 
@@ -97,9 +95,21 @@ class NotationsRelationManager extends RelationManager
 
                     Cluster::make([
 
-                        TextInput::make("assiduite1"),
-                        TextInput::make("assiduite2"),
-                        TextInput::make("assiduite3"),
+                        TextInput::make("assiduite1")
+                        ->numeric()
+                        ->disabled(fn($record) => auth()->user()->id == $record->firstValidator? false : true)
+                        ->maxValue(5)
+                        ->minValue(1),
+                        TextInput::make("assiduite2")
+                        ->numeric()
+                        ->disabled(fn($record) => auth()->user()->id == $record->secondValidator? false : true)
+                        ->maxValue(5)
+                        ->minValue(1),
+                        TextInput::make("assiduite3")
+                        ->numeric()
+                        ->disabled(fn($record) => auth()->user()->id == $record->thirdValidator? false : true)
+                        ->maxValue(5)
+                        ->minValue(1),
 
                     ])
                         ->inlineLabel()
@@ -107,9 +117,21 @@ class NotationsRelationManager extends RelationManager
 
                     Cluster::make([
 
-                        TextInput::make("commerciale1"),
-                        TextInput::make("commerciale2"),
-                        TextInput::make("commerciale3"),
+                        TextInput::make("commerciale1")
+                        ->numeric()
+                        ->disabled(fn($record) => auth()->user()->id == $record->firstValidator? false : true)
+                        ->maxValue(5)
+                        ->minValue(1),
+                        TextInput::make("commerciale2")
+                        ->numeric()
+                        ->disabled(fn($record) => auth()->user()->id == $record->secondValidator? false : true)
+                        ->maxValue(5)
+                        ->minValue(1),
+                        TextInput::make("commerciale3")
+                        ->numeric()
+                        ->disabled(fn($record) => auth()->user()->id == $record->thirdValidator? false : true)
+                        ->maxValue(5)
+                        ->minValue(1),
 
                     ])
                         ->inlineLabel()
@@ -117,9 +139,21 @@ class NotationsRelationManager extends RelationManager
 
                     Cluster::make([
 
-                        TextInput::make("connaissance1"),
-                        TextInput::make("connaissance2"),
-                        TextInput::make("connaissance3"),
+                        TextInput::make("connaissance1")
+                        ->numeric()
+                        ->disabled(fn($record) => auth()->user()->id == $record->firstValidator? false : true)
+                        ->maxValue(5)
+                        ->minValue(1),
+                        TextInput::make("connaissance2")
+                        ->numeric()
+                        ->disabled(fn($record) => auth()->user()->id == $record->secondValidator? false : true)
+                        ->maxValue(5)
+                        ->minValue(1),
+                        TextInput::make("connaissance3")
+                        ->numeric()
+                        ->disabled(fn($record) => auth()->user()->id == $record->thirdValidator? false : true)
+                        ->maxValue(5)
+                        ->minValue(1),
 
                     ])
                         ->inlineLabel()
@@ -127,9 +161,21 @@ class NotationsRelationManager extends RelationManager
 
                     Cluster::make([
 
-                        TextInput::make("encadrement1"),
-                        TextInput::make("encadrement2"),
-                        TextInput::make("encadrement3"),
+                        TextInput::make("encadrement1")
+                        ->numeric()
+                        ->disabled(fn($record) => auth()->user()->id == $record->firstValidator? false : true)
+                        ->maxValue(5)
+                        ->minValue(1),
+                        TextInput::make("encadrement2")
+                        ->numeric()
+                        ->disabled(fn($record) => auth()->user()->id == $record->secondValidator? false : true)
+                        ->maxValue(5)
+                        ->minValue(1),
+                        TextInput::make("encadrement3")
+                        ->numeric()
+                        ->disabled(fn($record) => auth()->user()->id == $record->thirdValidator? false : true)
+                        ->maxValue(5)
+                        ->minValue(1),
 
                     ])
                         ->inlineLabel()
@@ -137,61 +183,26 @@ class NotationsRelationManager extends RelationManager
 
                     Cluster::make([
 
-                        TextInput::make("promptitude1"),
-                        TextInput::make("promptitude2"),
-                        TextInput::make("promptitude3"),
+                        TextInput::make("promptitude1")
+                        ->numeric()
+                        ->disabled(fn($record) => auth()->user()->id == $record->firstValidator? false : true)
+                        ->maxValue(5)
+                        ->minValue(1),
+                        TextInput::make("promptitude2")
+                        ->numeric()
+                        ->disabled(fn($record) => auth()->user()->id == $record->secondValidator? false : true)
+                        ->maxValue(5)
+                        ->minValue(1),
+                        TextInput::make("promptitude3")
+                        ->numeric()
+                        ->disabled(fn($record) => auth()->user()->id == $record->thirdValidator? false : true)
+                        ->maxValue(5)
+                        ->minValue(1),
 
                     ])
                         ->inlineLabel()
                         ->label(__("Promptitude a rendre compte et à transmettre les ordres")),
                 ])
-
-
-
-            // Section::make("Notes du chef immédiat")
-            // ->collapsible()
-            // ->schema([
-
-            //     Grid::make(5)
-            //     ->schema([
-            //         TextInput::make("note_a")->label(__("Assiduité et disponibilité")),
-            //         TextInput::make("note_b")->label(__("Capacité commerciale, d'initiative et de créativité")),
-            //         TextInput::make("note_c")->label(__("Connaissances et consciences professionnelles")),
-            //         TextInput::make("note_c")->label(__("Capacité de diriger et de conduire un groupe de travail")),
-            //         TextInput::make("note_c")->label(__("Sens de l'intérêt général et du bien public")),
-            //     ])
-            // ]),
-
-            // Section::make("Notes du chef Hierarchique suivant (1)")
-            // ->collapsible()
-            // ->schema([
-
-            //     Grid::make(5)
-            //     ->schema([
-            //         TextInput::make("note_a")->label(__("Assiduité et disponibilité")),
-            //         TextInput::make("note_b")->label(__("Capacité commerciale, d'initiative et de créativité")),
-            //         TextInput::make("note_c")->label(__("Connaissances et consciences professionnelles")),
-            //         TextInput::make("note_c")->label(__("Capacité de diriger et de conduire un groupe de travail")),
-            //         TextInput::make("note_c")->label(__("Sens de l'intérêt général et du bien public")),
-            //     ])
-            // ]),
-
-            // Section::make("Notes du chef Hierarchique suivant (2)")
-            // ->collapsible()
-            // ->schema([
-
-            //     Grid::make(5)
-            //     ->schema([
-            //         TextInput::make("note_a")->label(__("Assiduité et disponibilité")),
-            //         TextInput::make("note_b")->label(__("Capacité commerciale, d'initiative et de créativité")),
-            //         TextInput::make("note_c")->label(__("Connaissances et consciences professionnelles")),
-            //         TextInput::make("note_c")->label(__("Capacité de diriger et de conduire un groupe de travail")),
-            //         TextInput::make("note_c")->label(__("Sens de l'intérêt général et du bien public")),
-            //     ])
-            // ]),
-
-
-
         ];
     }
 

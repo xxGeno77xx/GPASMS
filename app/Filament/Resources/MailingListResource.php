@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\NavigationGroupEnums;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\Staff;
@@ -27,6 +28,8 @@ class MailingListResource extends Resource
     protected static ?string $label = "Listes de diffusion";
 
     protected static ?string $navigationIcon = 'heroicon-o-speaker-wave';
+
+    protected static ?string $navigationGroup = "Messagerie";
 
     public static function form(Form $form): Form
     {
