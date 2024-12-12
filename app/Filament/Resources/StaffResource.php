@@ -116,7 +116,7 @@ class StaffResource extends Resource
                                 Select::make("post_id")
                                 ->label(__("Poste occuppé"))
                                 ->required()
-                                ->options(Post::pluck("libelle", "id"))
+                                ->options(Poste::pluck("label", "id"))
                                 ->searchable()
                                 ->createOptionForm([
                                    TextInput::make('label')
