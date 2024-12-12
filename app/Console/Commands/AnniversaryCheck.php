@@ -2,9 +2,10 @@
 
 namespace App\Console\Commands;
 
-use App\Filament\Resources\NotificationResource\Pages\CreateNotification;
+use Carbon\Carbon;
 use App\Models\Staff;
 use Illuminate\Console\Command;
+use App\Filament\Resources\NotificationResource\Pages\CreateNotification;
 
 class AnniversaryCheck extends Command
 {
@@ -27,7 +28,7 @@ class AnniversaryCheck extends Command
      */
     public function handle()
     {
-        $concerned = Staff::whereDate("birthDate", today())->get();
+        $concerned = Staff::get()->filter(fn($item, $key) => Carbon::parse($item->birthDate)->format("d/m") == Carbon::today()->format("d/m"));
 
         $message = config("app.StandardMessages.birthday", " ");
 
