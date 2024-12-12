@@ -29,7 +29,7 @@ class AnniversaryCheck extends Command
     {
         $concerned = Staff::whereDate("birthDate", today())->get();
 
-        $message = config("app.StandardMessages", " ");
+        $message = config("app.StandardMessages.birthday", " ");
 
         if($concerned->count() >= 1)
         {
